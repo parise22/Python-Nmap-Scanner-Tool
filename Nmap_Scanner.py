@@ -85,7 +85,6 @@ def check_ports(ip_addr):
 		    result = scanner.scan(ip_addr, str(port), '-sV')
 		    port_status = (result['scan'][ip_addr]['tcp'][port]['state'])
 		    print("Port " + str(port) + " is " + str(port_status))
-		    
 		except:
 		    print("Can't scan port " + str(port))
 		    
@@ -94,51 +93,56 @@ def compare_scans():
 
 	# Getting current directory to make is easy to copy and paste file scan names.
 	directory_path = os.getcwd()
-	files_in_directory = os.listdir(directory_path)
+	directory_path += "/Scans"
 	
-	print("\nPrevious scans in this directory: \n")
-	
-	scans_found = 0
-	
-	for file_name in files_in_directory:
-		if("Scan_results" in file_name):
-			print("\t" + file_name)
-			scans_found = scans_found + 1
-	
-	if(scans_found == 0):
+	if os.path.isdir("Scans") == False:
 		print("\tNo scans found. Please run some scans first.")
 	else:
-		print("\nPlease copy the file names you want to compare into the fields below.")
-		file_name1 = input("\nEnter name of first file: ")
-		file_name2= input("\nEnter name of second file: ")
+		files_in_directory = os.listdir(directory_path)
 		
-		file1 = directory_path + "/" + file_name1
-		file2 = directory_path + "/" + file_name2
+		print("\nPrevious scans in this directory: \n")
+		
+		scans_found = 0
+		
+		for file_name in files_in_directory:
+			if("Scan_results" in file_name):
+				print("\t" + file_name)
+				scans_found = scans_found + 1
+		
+		if(scans_found == 0):
+			print("\tNo scans found. Please run some scans first.")
+		else:
+			print("\nPlease copy the file names you want to compare into the fields below.")
+			file_name1 = input("\nEnter name of first file: ")
+			file_name2= input("\nEnter name of second file: ")
+			
+			file1 = directory_path + "/" + file_name1
+			file2 = directory_path + "/" + file_name2
 
-		# Read the scans
-		f1 = open(file1, "r")   
-		f2 = open(file2, "r")   
-		
-		print("\nDifferences: \n")
-		  
-		# Comparing the two files line by line (Credit to: https://origin.geeksforgeeks.org/how-to-compare-two-text-files-in-python/)
-		i = 0
-		  
-		for line1 in f1: 
-			i += 1
+			# Read the scans
+			f1 = open(file1, "r")   
+			f2 = open(file2, "r")   
+			
+			print("\nDifferences: \n")
 			  
-			for line2 in f2: 
+			# Comparing the two files line by line (Credit to: https://origin.geeksforgeeks.org/how-to-compare-two-text-files-in-python/)
+			i = 0
+			  
+			for line1 in f1: 
+				i += 1
 				  
-				# matching line1 from both files 
-				if line1 != line2:   
-					print("Line ", i, ":") 
-					# else print that line from both files 
-					print("\tFile 1:", line1, end='') 
-					print("\tFile 2:", line2, end='') 
-				break
-		   
-		f1.close()                                        
-		f2.close()     
+				for line2 in f2: 
+					  
+					# matching line1 from both files 
+					if line1 != line2:   
+						print("Line ", i, ":") 
+						# else print that line from both files 
+						print("\tFile 1:", line1, end='') 
+						print("\tFile 2:", line2, end='') 
+					break
+			   
+			f1.close()                                        
+			f2.close()     
 	
 	
 def run_scan(ip_addr, user_option):
@@ -229,10 +233,14 @@ def main():
 	if (user_option != 9):
 		ip_addr = get_ip()
 	else:
-	# Assigning a placeholder value
+	# Assigning a placeholder values
 		ip_addr = ''
 		
 	run_scan(ip_addr, user_option)
 
+	
+
+
 if __name__== "__main__":
 	main()
+
